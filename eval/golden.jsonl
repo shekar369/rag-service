@@ -1,0 +1,2 @@
+{"question": "REPLACE: a question your docs can answer", "reference_answer": "REPLACE: the correct answer in 1-2 sentences", "expected_sources": ["your_file.pdf"]}
+{"question": "REPLACE: a second question", "reference_answer": "REPLACE: reference answer", "expected_sources": ["another_file.md"]}

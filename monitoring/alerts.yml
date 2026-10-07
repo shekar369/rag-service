@@ -1,0 +1,23 @@
+groups:
+  - name: rag
+    rules:
+      - alert: RagHighP95ChatLatency
+        expr: histogram_quantile(0.95, sum(rate(rag_http_latency_seconds_bucket{path=~"/chat.*"}[5m])) by (le)) > 15
+        for: 5m
+        labels: {severity: warning}
+        annotations: {summary: "p95 chat latency above 15s"}
+      - alert: RagHighErrorRate
+        expr: sum(rate(rag_http_requests_total{status=~"5.."}[5m])) / sum(rate(rag_http_requests_total[5m])) > 0.05
+        for: 5m
+        labels: {severity: critical}
+        annotations: {summary: "5xx rate above 5%"}
+      - alert: RagUnansweredSpike
+        expr: sum(rate(rag_unanswered_total[30m])) / sum(rate(rag_chat_total[30m])) > 0.3
+        for: 15m
+        labels: {severity: warning}
+        annotations: {summary: "Over 30% of answers are 'I don't know' - possible retrieval/index regression"}
+      - alert: RagThumbsDownSpike
+        expr: sum(rate(rag_feedback_total{vote="down"}[1h])) / sum(rate(rag_feedback_total[1h])) > 0.4
+        for: 30m
+        labels: {severity: warning}
+        annotations: {summary: "Thumbs-down ratio above 40%"}

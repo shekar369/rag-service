@@ -1,0 +1,42 @@
+[project]
+name = "rag-service"
+version = "0.1.0"
+description = "LangChain RAG service with FastAPI, observability, eval and monitoring"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "python-multipart",
+    "pydantic-settings",
+    "langchain",
+    "langchain-core",
+    "langchain-community",
+    "langchain-text-splitters",
+    "langchain-chroma",
+    "chromadb",
+    "rank-bm25",
+    "pypdf",
+    "prometheus-client",
+    "langsmith",
+    "langchain-huggingface>=1.2.2",
+    "sentence-transformers>=6.1.0",
+    "langchain-openai>=1.6.7",
+    "langchain-nvidia-ai-endpoints>=1.4.3",
+]
+
+# Pick only the providers you use:  uv sync --extra anthropic --extra hf
+[project.optional-dependencies]
+anthropic = ["langchain-anthropic"]
+bedrock   = ["langchain-aws"]
+openai    = ["langchain-openai"]
+hf        = ["langchain-huggingface", "sentence-transformers"]
+
+[dependency-groups]
+dev = ["ruff", "pytest", "pytest-asyncio", "httpx"]
+
+[tool.uv]
+package = false   # application, not a distributable library
+
+[tool.ruff]
+line-length = 100
